@@ -23,8 +23,70 @@ $(document).ready(function () {
     var hourArray = [9, 10, 11, 12, 13, 14, 15, 16, 17];
     var hourArrayAMPM = ["9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm"];
 
+    dateToSave = moment().format('DD-MM-YYYY');
+
+    // console.log(dateToSave);
 
 
+
+
+    var taskObjectArray = {
+        objDate: "",
+        taskArray: [{
+            hourID: 0,
+            taskItem: ""
+        }]
+    }
+
+    //Checking if the task list for today in the memory
+
+    var taskObjectArrayToDisplay = "";
+
+    var retrievedTaskObjectArray = JSON.parse(localStorage.getItem("taskObjectArray"));
+    // console.log(retrievedTaskObjectArrayObject);
+    if (retrievedTaskObjectArray === null || retrievedTaskObjectArray.objDate != dateToSave) {
+        taskObjectArrayToDisplay = taskObjectArray;
+        taskObjectArrayToDisplay.taskArray = [];
+
+        // creating new array for the date
+        taskObjectArrayToDisplay.objDate = dateToSave;
+        for (var hr = 0; hr < hourArray.length; hr++) {
+            var taskArrayMember = {
+                hourID: 0,
+                taskItem: ""
+            }
+            taskArrayMember.hourID = hourArray[hr];
+            taskArrayMember.taskItem = "Lorem" + hourArray[hr];
+            taskObjectArrayToDisplay.taskArray.push(taskArrayMember);
+            // console.log(taskObjectArrayToDisplay);
+        }
+    }
+    else {
+        taskObjectArrayToDisplay = retrievedTaskObjectArray;
+        //this need to display on page load
+    }
+
+    var setBackgroundForHour = function (hrs) {
+
+        if (currentHour < hrs) {
+            $(".setBackground" + hrs).css("background-color", "rgb(204, 201, 201)");
+        }
+        else if (currentHour === hrs) {
+            $(".setBackground" + hrs).css("background-color", "rgb(188, 245, 141)");
+        }
+        else {
+            $(".setBackground" + hrs).css("background-color", "rgb(159, 213, 245)");
+        }
+    }
+
+    var displayExistingTasks = function () {
+        if (taskObjectArrayToDisplay != "") {
+            for (it = 0; it < taskObjectArrayToDisplay.taskArray.length; it++) {
+                var stringToSearch = "#txt" + taskObjectArrayToDisplay.taskArray[it].hourID;
+                $(stringToSearch).text(taskObjectArrayToDisplay.taskArray[it].taskItem);
+            }
+        }
+    }
 
 
     // creating all the html elements to show the daily planner
@@ -60,7 +122,7 @@ $(document).ready(function () {
 
         // freate textarea
         var inputTextArea = $("<textarea>");
-        inputTextArea.text("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit vel quasi labore, delectus, veniam vero");
+        // inputTextArea.text("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit vel quasi labore, delectus, veniam vero");
 
 
         inputTextArea.addClass("form-control");
@@ -68,6 +130,7 @@ $(document).ready(function () {
         inputTextArea.addClass("setBackground" + hourArray[i]);
         inputTextArea.attr("id", "txt" + hourArray[i]);
         inputTextArea.attr("textarea-associated-hour", hourArray[i]);
+
 
         //create append button div
         var appendButtonDiv = $("<div>");
@@ -110,19 +173,15 @@ $(document).ready(function () {
         // ***********************************************
         //showing hourly sections with different colour code
 
-        if (hourArray[i] < currentHour) {
-            $(".setBackground" + hourArray[i]).css("background-color", "rgb(204, 201, 201)");
-        }
-        else if (hourArray[i] === currentHour) {
-            $(".setBackground" + hourArray[i]).css("background-color", "rgb(188, 245, 141)");
-        }
-        else {
-            $(".setBackground" + hourArray[i]).css("background-color", "rgb(159, 213, 245)");
-        }
+        setBackgroundForHour(hourArray[i]);
 
     }
 
     $("#line17").hide();// hide last seperating line
+
+    //displaying existing value
+
+    displayExistingTasks();
 
     // ***********************************************
     //upon click, check the click from button and get the value
@@ -136,10 +195,28 @@ $(document).ready(function () {
             var clickedButtonHour = $(targetButton).attr("button-associated-hour");
             // console.log(clickedButtonHour);
 
+            //generate the text area id and display
             var textAreaID = "#txt" + clickedButtonHour;
             var txtContent = $(textAreaID).val();
-            console.log(txtContent);
+            console.log(textAreaID,txtContent);
+            //need to save into object
+
+            // var taskObjectArray = {
+            //     objDate: "",
+            //     taskArray: [{
+            //         hourID: 0,
+            //         taskItem: ""
+            //     }]
+            // }
+            taskObjectArrayToDisplay.objDate = dateToSave;
+
+            // var stringToSearch = "#txt" + taskObjectArrayToDisplay.taskArray[it].hourID;
+            // $(stringToSearch).text(taskObjectArrayToDisplay.taskArray[it].taskItem);
+
+
         }
     });
+
+
 
 })
