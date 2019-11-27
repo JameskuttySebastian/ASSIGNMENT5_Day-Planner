@@ -13,8 +13,8 @@ $(document).ready(function () {
     selectedDate.textContent = currentDate;
 
 
-    // var currentHour = parseInt(moment().format("H"));
-    var currentHour = 12;
+    var currentHour = parseInt(moment().format("H"));
+    // var currentHour = 12;
     // console.log(currentHour);
 
 
@@ -24,6 +24,8 @@ $(document).ready(function () {
     var hourArrayAMPM = ["9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm"];
 
     dateToSave = moment().format('DD-MM-YYYY');
+
+    // dateToSave = "28-10-2019"
 
     // console.log(dateToSave);
 
@@ -56,7 +58,7 @@ $(document).ready(function () {
                 taskItem: ""
             }
             taskArrayMember.hourID = hourArray[hr];
-            taskArrayMember.taskItem = "Lorem" + hourArray[hr];
+            taskArrayMember.taskItem = "";
             taskObjectArrayToDisplay.taskArray.push(taskArrayMember);
             // console.log(taskObjectArrayToDisplay);
         }
@@ -209,10 +211,13 @@ $(document).ready(function () {
             //     }]
             // }
             taskObjectArrayToDisplay.objDate = dateToSave;
-
-            // var stringToSearch = "#txt" + taskObjectArrayToDisplay.taskArray[it].hourID;
-            // $(stringToSearch).text(taskObjectArrayToDisplay.taskArray[it].taskItem);
-
+            for (var t=0; t<taskObjectArrayToDisplay.taskArray.length; t++){
+                if (taskObjectArrayToDisplay.taskArray[t].hourID ==clickedButtonHour){
+                    var stringToSearch = "#txt" + clickedButtonHour;
+                    indexOfObjectInArray = taskObjectArrayToDisplay.taskArray[t].taskItem = $(stringToSearch).val();
+                }            
+            }
+            localStorage.setItem("taskObjectArray", JSON.stringify(taskObjectArrayToDisplay));
 
         }
     });
