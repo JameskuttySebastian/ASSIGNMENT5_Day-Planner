@@ -1,33 +1,145 @@
-//header section
-//*********************************************** */
-//show current date
 
-var selectedDate = document.querySelector("#selectedDate");
+$(document).ready(function () {
 
-// variables
-var currentDate = moment().format('LL');
+    //header section
+    //*********************************************** */
+    //show current date
 
+    var selectedDate = document.querySelector("#selectedDate");
 
-
-//show current date for now
-selectedDate.textContent = currentDate;
-
-
-// ***********************************************
-//showing hourly sections
-
-//variables // not in use
-var startHour = 9;
-var endHour = 5;
+    // variables
+    var currentDate = moment().format('LL');
+    //show current date for now
+    selectedDate.textContent = currentDate;
 
 
-var hourArray = [9,10,11,12,1,2,3,4,5];
+    // var currentHour = parseInt(moment().format("H"));
+    var currentHour = 12;
+    // console.log(currentHour);
+
+
+    // ***********************************************
+    //showing hourly sections
+    var hourArray = [9, 10, 11, 12, 13, 14, 15, 16, 17];
+    var hourArrayAMPM = ["9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4 pm", "5 pm"];
 
 
 
 
-$(document).ready(function(){
 
-    //
+    // creating all the html elements to show the daily planner
+    for (var i = 0; i < hourArray.length; i++) {
+        //main div for row
+        var mainDiv = $("<div>");
+        mainDiv.addClass("row");
+        //---------------------------------------------------------------
+        //column for hour tag
+        var hourTagColumnDiv = $("<div>");
+        hourTagColumnDiv.addClass("col-sm-2 col-md-2 col-xl-1");
+        hourTagColumnDiv.addClass("setBackground" + hourArray[i]);
+
+        //text for hour column
+        var hourTagText = $("<p>");
+        hourTagText.text(hourArrayAMPM[i]);
+
+        //append hour tag to hour column
+        hourTagColumnDiv.append(hourTagText);
+        //---------------------------------------------------------------
+        // //create column and class for textbox
+        // var textAreaAndButtonDiv = $("<div>");
+        // textAreaAndButtonDiv.addClass("col-sm-10 col-md-10 col-xl-11");
+
+        //create column and class for textbox
+        var textAreaAndButtonColumnDiv = $("<div>");
+        textAreaAndButtonColumnDiv.addClass("col-sm-10 col-md-10 col-xl-11 textAreaColumn");
+        textAreaAndButtonColumnDiv.addClass("setBackground" + hourArray[i]);
+
+        // text area and button group
+        var textAreaAndButtonGroupDiv = $("<div>");
+        textAreaAndButtonGroupDiv.addClass("input-group");
+
+        // freate textarea
+        var inputTextArea = $("<textarea>");
+        inputTextArea.text("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit vel quasi labore, delectus, veniam vero");
+
+
+        inputTextArea.addClass("form-control");
+        inputTextArea.addClass(hourArrayAMPM[i]);
+        inputTextArea.addClass("setBackground" + hourArray[i]);
+        inputTextArea.attr("id", "txt" + hourArray[i]);
+        inputTextArea.attr("textarea-associated-hour", hourArray[i]);
+
+        //create append button div
+        var appendButtonDiv = $("<div>");
+        appendButtonDiv.addClass("input-group-append");
+
+
+        //creating button
+        var saveButton = $("<button>");
+        saveButton.addClass("btn btn-info");
+        saveButton.attr("id", "btn" + hourArray[i]);
+        saveButton.attr("button-associated-hour", hourArray[i]);
+
+        //creating button image span
+        var saveButtonSpan = $("<span>");
+        saveButtonSpan.addClass("fa fas fa-sticky-note");//add image for save button
+        saveButtonSpan.css("pointer-events", "none");
+
+        var hrLine = $("<hr>");
+        hrLine.addClass("thinLine");
+        hrLine.attr("id", "line" + hourArray[i]);
+
+        //append save button span to save button
+        saveButton.append(saveButtonSpan);
+
+        //append save button to save button span
+        appendButtonDiv.append(saveButton);
+
+        // appending text area and button div
+        textAreaAndButtonGroupDiv.append(inputTextArea, appendButtonDiv)
+
+        //add input group to column
+        textAreaAndButtonColumnDiv.append(textAreaAndButtonGroupDiv);
+
+        // append bot columns to main row div
+        mainDiv.append(hourTagColumnDiv);
+        mainDiv.append(textAreaAndButtonColumnDiv, hrLine);
+
+        //add main div to hour list
+        $(".hourList").append(mainDiv);
+        // ***********************************************
+        //showing hourly sections with different colour code
+
+        if (hourArray[i] < currentHour) {
+            $(".setBackground" + hourArray[i]).css("background-color", "rgb(204, 201, 201)");
+        }
+        else if (hourArray[i] === currentHour) {
+            $(".setBackground" + hourArray[i]).css("background-color", "rgb(188, 245, 141)");
+        }
+        else {
+            $(".setBackground" + hourArray[i]).css("background-color", "rgb(159, 213, 245)");
+        }
+
+    }
+
+    $("#line17").hide();// hide last seperating line
+
+    // ***********************************************
+    //upon click, check the click from button and get the value
+    // also identiry click is from which button
+
+    $(".btn").on("click", function (event) {
+
+        if (event.target.matches("button")) {
+            var targetButton = event.target;
+            // console.log(targetButton);
+            var clickedButtonHour = $(targetButton).attr("button-associated-hour");
+            // console.log(clickedButtonHour);
+
+            var textAreaID = "#txt" + clickedButtonHour;
+            var txtContent = $(textAreaID).val();
+            console.log(txtContent);
+        }
+    });
 
 })
