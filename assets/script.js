@@ -70,7 +70,7 @@ $(document).ready(function () {
 
     var setBackgroundForHour = function (hrs) {
 
-        if (currentHour < hrs) {
+        if (hrs < currentHour) {
             $(".setBackground" + hrs).css("background-color", "rgb(204, 201, 201)");
         }
         else if (currentHour === hrs) {
