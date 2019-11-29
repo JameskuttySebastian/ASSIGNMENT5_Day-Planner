@@ -13,8 +13,8 @@ $(document).ready(function () {
     selectedDate.textContent = currentDate;
 
 
-    var currentHour = parseInt(moment().format("H"));
-    // var currentHour = 12;
+    // var currentHour = parseInt(moment().format("H"));
+    var currentHour = 12;
     // console.log(currentHour);
 
 
@@ -28,6 +28,44 @@ $(document).ready(function () {
     // dateToSave = "28-10-2019"
 
     // console.log(dateToSave);
+
+
+    function createInputTextArea(hourArrayAMPM, hourArray) {
+        // freate textarea
+        var inputTextArea = $("<textarea>");
+        // inputTextArea.text("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit vel quasi labore, delectus, veniam vero");
+
+        inputTextArea.addClass("form-control");
+        inputTextArea.addClass(hourArrayAMPM);
+        inputTextArea.addClass("setBackground" + hourArray);
+        inputTextArea.attr("id", "txt" + hourArray);
+        inputTextArea.attr("textarea-associated-hour", hourArray);
+        return (inputTextArea);
+    }
+
+    function createSaveButton(hourArray) {
+        var saveButton = $("<button>");
+        saveButton.addClass("btn btn-info");
+        saveButton.attr("id", "btn" + hourArray);
+        saveButton.attr("button-associated-hour", hourArray);
+
+        //creating button image span
+        var saveButtonSpan = $("<span>");
+        saveButtonSpan.addClass("fa fas fa-sticky-note");//add image for save button
+        saveButtonSpan.css("pointer-events", "none");
+
+        //append save button span to save button
+        saveButton.append(saveButtonSpan);
+
+        return (saveButton);
+    }
+
+    function createHrLine(hourArray) {
+        var hrLine = $("<hr>");
+        hrLine.addClass("thinLine");
+        hrLine.attr("id", "line" + hourArray);
+        return (hrLine);
+    }
 
 
 
@@ -45,7 +83,7 @@ $(document).ready(function () {
     var taskObjectArrayToDisplay = "";
 
     var retrievedTaskObjectArray = JSON.parse(localStorage.getItem("taskObjectArray"));
-    // console.log(retrievedTaskObjectArrayObject);
+    // console.log(retrievedTaskObjectArray);
     if (retrievedTaskObjectArray === null || retrievedTaskObjectArray.objDate != dateToSave) {
         taskObjectArrayToDisplay = taskObjectArray;
         taskObjectArrayToDisplay.taskArray = [];
@@ -122,40 +160,18 @@ $(document).ready(function () {
         var textAreaAndButtonGroupDiv = $("<div>");
         textAreaAndButtonGroupDiv.addClass("input-group");
 
-        // freate textarea
-        var inputTextArea = $("<textarea>");
-        // inputTextArea.text("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Velit vel quasi labore, delectus, veniam vero");
-
-
-        inputTextArea.addClass("form-control");
-        inputTextArea.addClass(hourArrayAMPM[i]);
-        inputTextArea.addClass("setBackground" + hourArray[i]);
-        inputTextArea.attr("id", "txt" + hourArray[i]);
-        inputTextArea.attr("textarea-associated-hour", hourArray[i]);
-
+        
+        var inputTextArea = createInputTextArea(hourArrayAMPM[i], hourArray[i]);
 
         //create append button div
         var appendButtonDiv = $("<div>");
         appendButtonDiv.addClass("input-group-append");
 
-
         //creating button
-        var saveButton = $("<button>");
-        saveButton.addClass("btn btn-info");
-        saveButton.attr("id", "btn" + hourArray[i]);
-        saveButton.attr("button-associated-hour", hourArray[i]);
+        var saveButton = createSaveButton(hourArray[i]);
 
-        //creating button image span
-        var saveButtonSpan = $("<span>");
-        saveButtonSpan.addClass("fa fas fa-sticky-note");//add image for save button
-        saveButtonSpan.css("pointer-events", "none");
-
-        var hrLine = $("<hr>");
-        hrLine.addClass("thinLine");
-        hrLine.attr("id", "line" + hourArray[i]);
-
-        //append save button span to save button
-        saveButton.append(saveButtonSpan);
+        // creating hr line after element
+        var hrLine = createHrLine(hourArray[i]);
 
         //append save button to save button span
         appendButtonDiv.append(saveButton);
@@ -200,7 +216,7 @@ $(document).ready(function () {
             //generate the text area id and display
             var textAreaID = "#txt" + clickedButtonHour;
             var txtContent = $(textAreaID).val();
-            console.log(textAreaID,txtContent);
+            console.log(textAreaID, txtContent);
             //need to save into object
 
             // var taskObjectArray = {
@@ -211,14 +227,14 @@ $(document).ready(function () {
             //     }]
             // }
             taskObjectArrayToDisplay.objDate = dateToSave;
-            for (var t=0; t<taskObjectArrayToDisplay.taskArray.length; t++){
-                if (taskObjectArrayToDisplay.taskArray[t].hourID ==clickedButtonHour){
+            for (var t = 0; t < taskObjectArrayToDisplay.taskArray.length; t++) {
+                if (taskObjectArrayToDisplay.taskArray[t].hourID == clickedButtonHour) {
                     var stringToSearch = "#txt" + clickedButtonHour;
                     indexOfObjectInArray = taskObjectArrayToDisplay.taskArray[t].taskItem = $(stringToSearch).val();
-                }            
+                }
             }
             localStorage.setItem("taskObjectArray", JSON.stringify(taskObjectArrayToDisplay));
-
+            // console.log(JSON.stringify(taskObjectArrayToDisplay));
         }
     });
 
