@@ -13,8 +13,8 @@ $(document).ready(function () {
     selectedDate.textContent = currentDate;
 
 
-    // var currentHour = parseInt(moment().format("H"));
-    var currentHour = 12;
+    var currentHour = parseInt(moment().format("H"));
+    // var currentHour = 12;
     // console.log(currentHour);
 
 
