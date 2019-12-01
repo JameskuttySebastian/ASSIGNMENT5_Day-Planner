@@ -1,5 +1,10 @@
 # ASSIGNMENT5_Day-Planner
 
+## URLs
+
+1. Github : https://github.com/JameskuttySebastian/ASSIGNMENT5_Day-Planner
+2. GitPages : https://jameskuttysebastian.github.io/ASSIGNMENT5_Day-Planner/
+
 ## This application works as follows
 
 1. Application creates daily planner for the day
