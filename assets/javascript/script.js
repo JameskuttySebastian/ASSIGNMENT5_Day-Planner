@@ -137,15 +137,23 @@ $(document).ready(function () {
         //---------------------------------------------------------------
         //column for hour tag
         var hourTagColumnDiv = $("<div>");
-        hourTagColumnDiv.addClass("col-sm-2 col-md-2 col-xl-1");
+        hourTagColumnDiv.addClass("col-sm-2 col-md-2 col-xl-1 hourTagColumnDiv");
         hourTagColumnDiv.addClass("setBackground" + hourArray[i]);
+
+
+        //text div
+        var hourTagTextDiv = $("<div>");
+        hourTagTextDiv.addClass("hourTagTextDiv");
 
         //text for hour column
         var hourTagText = $("<p>");
         hourTagText.text(hourArrayAMPM[i]);
 
         //append hour tag to hour column
-        hourTagColumnDiv.append(hourTagText);
+        hourTagTextDiv.append(hourTagText);
+
+        //append hour tag to hour column
+        hourTagColumnDiv.append(hourTagTextDiv);
         //---------------------------------------------------------------
         // //create column and class for textbox
         // var textAreaAndButtonDiv = $("<div>");
